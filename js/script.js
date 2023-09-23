@@ -11,15 +11,14 @@ p2_y = 250
 animar = () =>{
     ctx.clearRect(0,0,canvas_width,canvas_height)
     player1 = ctx.fillRect(p1_x,p1_y,50,200)   
-    player2 = ctx.fillRect(p2_x,p2_y,50,200)
-    ball = ctx.FillBall(0,0,50,50)
+    player2 = ctx.fillRect(p2_x,p2_y,50,200)   
     requestAnimationFrame(animar)
 }
 animar()
 velocidade = 15
 document.addEventListener("keydown", butao = (e) =>{
 
-    // console.log(` ${e.code}`);
+    console.log(` ${e.code}`);
     if(e.code == "KeyW"){
         p1_y = p1_y- velocidade
     }
