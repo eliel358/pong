@@ -13,7 +13,7 @@ ball_x = 350
 ball_y = 350
 radius = 20
 vx = -5
-vy = 0
+vy = 2
 
 player_height = 200
 player_width = 50
