@@ -1,42 +1,136 @@
-*{
-margin: 0;
-padding: 0;
-
-}
-html{
-    height: 100%;
-}
-body{
+* {
+    margin: 0;
+    padding: 0;
     font-family: monospace;
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    justify-content: center;
-    align-items: center;
 }
-.conteiner_placar{
-    font-size: 5em;
+
+li {
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+#conteiner_placar {
+    position: fixed;
+    font-size: 3em;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.2em;
+    gap: 0.10em;
+    opacity: 20%;
+    transform: translate(-50%, -50%);
+    top: 20%;
+    left: 50%;
 }
 
-.game{
-    border: 5px solid black;
-    border-radius: 20px;
+.game {
+    position: absolute;
+    border: 5px solid grey;
+    border-radius: 5px;
     margin: 1em 0;
+    max-width: 80%;
+    max-height: 80%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
 }
 
 
-button{
-    font-family: monospace;
-    max-height: fit-content;
-    max-width: fit-content;
-    font-size: 5em;
+#showOpt {
+    position: absolute;
     text-align: center;
-    text-wrap: wrap;   
+    text-wrap: wrap;
     border: 5px solid black;
-    border-radius: 20px;
     padding: 0.2em;
+    bottom: 0;
+    cursor: pointer;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+#options {
+    position: absolute;
+    width: max-content;
+    background-color: black;
+    padding: 2px;
+    list-style: none;
+    border-top-right-radius: 5px;
+    bottom: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.pauseON {
+    opacity: 50%;
+}
+
+#p1UP {
+    position: absolute;
+    left: 10%;
+    top: 20%;
+    font-size: 50px;
+    background-color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+#p1DW {
+    position: absolute;
+    left: 10%;
+    bottom: 20%;
+    font-size: 50px;
+    background-color: white;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+#p2UP {
+    position: absolute;
+    right: 10%;
+    top: 20%;
+    font-size: 50px;
+    color: cornflowerblue;
+    background-color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+#p2DW {
+    position: absolute;
+    right: 10%;
+    bottom: 20%;
+    font-size: 50px;
+    color: cornflowerblue;
+    background-color: white;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+@media (max-height:420px) {
+    body {
+        background-color: #f5f5dc;
+    }
+
+    #p1UP {
+        display: flex;
+    }
+
+    #p1DW {
+        display: flex;
+    }
+
+    #p2UP {
+        display: flex;
+    }
+
+    #p2DW {
+        display: flex;
+    }
+
+    #conteiner_placar {
+        font-size: 2em;
+    }
+    
 }

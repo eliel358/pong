@@ -1,63 +1,162 @@
-canvas = document.getElementById('canvas1')
-ctx = canvas.getContext('2d')
+const canvas = document.getElementById('canvas1');
+const ctx = canvas.getContext('2d');
 
-canvas_width = canvas.width = 700
-canvas_height = canvas.height = 700
-p1_x = 0
-p1_y = 250
+let canvas_width = canvas.width = 700;
+let canvas_height = canvas.height = 700;
+let p1_x = 0;
+let p1_y = 0;
 
-p2_x = 650
-p2_y = 250
+let p2_x = 670;
+let p2_y = 500;
 
-ball_x = 350
-ball_y = 350
-radius = 20
-vx = -5
-vy = 2
+let ball_x = 350;
+let ball_y = 350;
+const radius = 20;
+let vx = -2.5;
+let vy = 1;
 
-player_height = 200
-player_width = 50
-animar = () =>{
+const player_height = 200;
+const player_width = 30;
+let velocidade = 50;
 
-    ctx.clearRect(0,0,canvas_width,canvas_height)
-    player1 = ctx.fillRect(p1_x,p1_y,player_width,player_height)   
-    player2 = ctx.fillRect(p2_x,p2_y,player_width,player_height)   
-   
+let p1Score = 0;
+let p2Score = 0;
+
+let pause = false
+
+const animar = () => {
+    if (pause == true) {
+        return;
+    }
+
+    ctx.clearRect(0, 0, canvas_width, canvas_height);
+    ctx.fillStyle = "black"
+    ctx.fillRect(p1_x, p1_y, player_width, player_height);
+    ctx.fillStyle = "cornflowerblue"
+    ctx.fillRect(p2_x, p2_y, player_width, player_height);
+
     ctx.beginPath();
     ctx.strokeStyle = "black";
+    ctx.fillStyle = "white"
     ctx.arc(ball_x, ball_y, radius, 0, Math.PI * 2, false);
+    ctx.fill();
     ctx.stroke();
-    if(radius + ball_y > canvas_height || radius - ball_y > 0){
-        vy = vy-vy*2
+
+    if (ball_y + radius > canvas_height || ball_y - radius < 0) {
+        vy = -vy;
     }
-    if(radius + ball_x > canvas_width  || radius - ball_x > 0){
-        vx = vx-vx*2
+
+    if (ball_x + radius > canvas_width) {
+        p1Score++
+        resetBall();
+    } else if (ball_x - radius < 0) {
+        p2Score++
+        resetBall();
     }
-    if(radius + ball_x > p2_x && ball_y+radius > p2_y && ball_y-radius<p2_y+player_height){
-        vx = vx-vx*2
+
+    checkCollision();
+
+    ball_x += vx;
+    ball_y += vy;
+
+    requestAnimationFrame(animar);
+};
+
+const checkCollision = () => {
+    if (ball_x - radius < p1_x + player_width) {
+        if (ball_y > p1_y && ball_y < p1_y + player_height) {
+            ball_x = p1_x + player_width + radius;
+            vx = -vx + 0.5;
+            vy += 0.5;
+        }
     }
-    if(ball_x-radius < p1_x+player_width && ball_y-radius > p1_y && ball_y - radius < p1_y+player_height){
-        vx = vx-vx*2
+    if (ball_x + radius > p2_x) {
+        if (ball_y > p2_y && ball_y < p2_y + player_height) {
+            ball_x = p2_x - radius;
+            vx = -vx - 0.5;
+            vy += 0.5;
+        }
     }
-    ball_x = ball_x + vx
-    ball_y = ball_y + vy
-    requestAnimationFrame(animar)    
-}
-animar()
-velocidade = 15
-document.addEventListener("keydown", butao = (e) =>{
+};
+
+const resetBall = () => {
+    vx = -2.5;
+    vy = 1;
+    ball_x = canvas_width / 2;
+    ball_y = canvas_height / 2;
+    vx = -vx;
+    document.getElementById("conteiner_placar").textContent = `${p1Score}x${p2Score}`
+};
+
+animar();
+
+document.addEventListener("keydown", (e) => {
+    if (pause == true) {
+        return;
+    }
 
     console.log(` ${e.code}`);
-    if(e.code == "KeyW"){
-        p1_y = p1_y- velocidade
+    if (e.code == "KeyW") {
+        p1_y = Math.max(0, p1_y - velocidade);
     }
-    if(e.code == "KeyS"){
-        p1_y = p1_y+ velocidade
+    if (e.code == "KeyS") {
+        p1_y = Math.min(canvas_height - player_height, p1_y + velocidade);
     }
-    if(e.code == "ArrowUp"){
-        p2_y = p2_y- velocidade
+    if (e.code == "ArrowUp") {
+        p2_y = Math.max(0, p2_y - velocidade);
     }
-    if(e.code == "ArrowDown"){
-        p2_y = p2_y+ velocidade
+    if (e.code == "ArrowDown") {
+        p2_y = Math.min(canvas_height - player_height, p2_y + velocidade);
     }
 });
+
+function mobileEvents(event) {
+    arrow = event.target.id
+
+    if (pause == true) {
+        return;
+    }
+    switch (arrow) {
+        case "p1UP":
+            p1_y = Math.max(0, p1_y - velocidade)
+            break;
+        case "p1DW":
+            p1_y = Math.min(canvas_height - player_height, p1_y + velocidade);
+            break;
+        case "p2UP":
+            p2_y = Math.max(0, p2_y - velocidade);
+            break;
+        case "p2DW":
+            p2_y = Math.min(canvas_height - player_height, p2_y + velocidade);
+            break;
+
+    }
+}
+
+function optionsFunctions(event) {
+    option = event.target.textContent
+    switch (option) {
+        case "Reiniciar":
+            location.reload()
+            break;
+        case "Mobile":
+            document.getElementById("buttonsMobile").classList.toggle("hidden")
+            break;
+        case "X":
+            showOP()
+            break
+    }
+
+}
+
+function showOP() {
+    document.getElementById("options").classList.toggle("hidden")
+    document.getElementById("canvas1").classList.toggle("pauseON")
+
+    if (pause === false) {
+        pause = true
+    } else {
+        pause = false
+    }
+    animar()
+}
